@@ -1,0 +1,17 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+float Width;
+float Height;
+RWTexture2D<float4> Result;
+StructuredBuffer<float4> pixels;
+int resolution;
+
+[numthreads(8,8,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    float2 position = float2((id.x) * Width, (id.y) * Height);
+    Result[id.xy] = pixels[id.x * resolution + id.y];
+}
